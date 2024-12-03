@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+            android:allowBackup="true"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:fullBackupContent="@xml/backup_rules"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.PblMobile"
+            tools:targetApi="31">
+        <activity
+                android:name=".EggMonitoringActivity"
+                android:exported="false"
+                android:label="@string/title_activity_egg_monitoring"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".SecurityAlarmActivity"
+                android:exported="false"
+                android:label="@string/title_activity_security_alarm"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".FoodMonitoringActivity"
+                android:exported="false"
+                android:label="@string/title_activity_food_schedule"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".ProfileActivity"
+                android:exported="false"
+                android:label="@string/title_activity_profile"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".AboutActivity"
+                android:exported="false"
+                android:label="@string/title_activity_about"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".HomeActivity"
+                android:exported="false"
+                android:label="@string/title_activity_home"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".authentication.RegisterActivity"
+                android:exported="false"
+                android:label="@string/title_activity_register"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".authentication.LoginActivity"
+                android:exported="false"
+                android:label="@string/title_activity_login"
+                android:theme="@style/Theme.PblMobile"/>
+        <activity
+                android:name=".MainActivity"
+                android:exported="true"
+                android:label="@string/app_name"
+                android:theme="@style/Theme.PblMobile">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
