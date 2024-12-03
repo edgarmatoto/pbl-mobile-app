@@ -1,7 +1,6 @@
 package com.example.pblmobile.navbar
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -12,13 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.pblmobile.AboutActivity
-import com.example.pblmobile.HomeActivity
-import com.example.pblmobile.ProfileActivity
+import androidx.navigation.NavController
 import com.example.pblmobile.ui.theme.PblMobileTheme
 
 @Composable
-fun Navigation(modifier: Modifier = Modifier) {
+fun Navigation(navController: NavController) {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
@@ -31,7 +28,7 @@ fun Navigation(modifier: Modifier = Modifier) {
     val unselectedIcons = listOf(Icons.Outlined.Home, Icons.Outlined.ThumbUp, Icons.Outlined.Person)
 
     NavigationBar(
-        modifier, containerColor = MaterialTheme.colorScheme.primary
+        Modifier, containerColor = MaterialTheme.colorScheme.primary
     ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(icon = {
@@ -47,14 +44,11 @@ fun Navigation(modifier: Modifier = Modifier) {
                 sharedPreferences.edit().putInt("selected_item", index).apply()
 
                 when (index) {
-                    0 -> context.startActivity(Intent(context, HomeActivity::class.java))
+                    0 -> navController.navigate("home")
 
+                    1 -> navController.navigate("about")
 
-                    1 -> context.startActivity(Intent(context, AboutActivity::class.java))
-
-
-                    2 -> context.startActivity(Intent(context, ProfileActivity::class.java))
-
+                    2 -> navController.navigate("profile")
                 }
             })
         }
@@ -65,6 +59,6 @@ fun Navigation(modifier: Modifier = Modifier) {
 @Composable
 fun NavigationPreview() {
     PblMobileTheme {
-        Navigation()
+        Navigation(navController = NavController(LocalContext.current))
     }
 }

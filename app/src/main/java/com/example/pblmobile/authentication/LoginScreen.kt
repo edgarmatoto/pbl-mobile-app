@@ -1,11 +1,7 @@
 package com.example.pblmobile.authentication
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -18,24 +14,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.pblmobile.HomeActivity
+import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.user.LoginRequest
 import com.example.pblmobile.component.PrimaryButton
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import com.example.pblmobile.utils.UserPreferences
 import kotlinx.coroutines.launch
-
-class LoginActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PblMobileTheme {
-                LoginScreen(context = LocalContext.current)
-            }
-        }
-    }
-}
 
 @Composable
 fun UsernameInputField(onValueChange: (String) -> Unit) {
@@ -89,14 +74,15 @@ fun RegisterText(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, context: Context) {
+fun LoginScreen(navController: NavController) {
+    val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        modifier = modifier,
+        modifier = Modifier,
         topBar = {
             Box(
                 modifier = Modifier
@@ -126,34 +112,35 @@ fun LoginScreen(modifier: Modifier = Modifier, context: Context) {
                 // Handle login on button click
                 PrimaryButton(text = "Login") {
                     coroutineScope.launch {
-                        handleLogin(username, password, context)
+                        handleLogin(username, password, context, navController)
                     }
                 }
             }
         },
         bottomBar = {
             RegisterText {
-                val intent = Intent(context, RegisterActivity::class.java)
-                context.startActivity(intent)
+                // navigate to register screen
+                navController.navigate("register")
             }
         }
     )
 }
 
-suspend fun handleLogin(username: String, password: String, context: Context) {
+suspend fun handleLogin(username: String, password: String, context: Context, navController: NavController) {
     try {
         val loginRequest = LoginRequest(username, password)
         val response = RetrofitInstance.api.loginUser(loginRequest)
+
         if (response.status) {
             val userId = response.user.id
             val email = response.user.email
-
             val userPreferences = UserPreferences(context)
             userPreferences.saveUser(userId, username, email)
 
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
+            // navigate to Home screen
+            navController.navigate("home") {
+                popUpTo("login") { inclusive = true }
+            }
         } else {
             Toast.makeText(context, response.message, Toast.LENGTH_LONG).show()
         }

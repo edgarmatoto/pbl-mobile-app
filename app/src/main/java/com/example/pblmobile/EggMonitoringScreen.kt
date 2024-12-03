@@ -1,8 +1,5 @@
 package com.example.pblmobile
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -17,31 +14,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.pblmobile.navbar.Navigation
-import com.example.pblmobile.ui.theme.PblMobileTheme
-
-class FoodMonitoringActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PblMobileTheme {
-                FoodMonitoringScreen()
-            }
-        }
-    }
-}
 
 @Composable
-fun FoodMonitoringScreen() {
-    val context = LocalContext.current
-
+fun EggMonitoringScreen(navController: NavController) {
     Scaffold(topBar = {
         Box(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
         ) {
             Column {
                 Text(
-                    text = "Monitoring Pakan",
+                    text = "Monitoring Telur",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -52,22 +36,22 @@ fun FoodMonitoringScreen() {
         content = {
             Column(Modifier.padding(it)) {
                 Image(
-                    painter = painterResource(R.drawable.food_monitoring_screen),
+                    painter = painterResource(R.drawable.egg_monitoring_screen),
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize(),  // Agar gambar memenuhi seluruh layar
                     contentScale = ContentScale.Crop
                 )
             }
         },
 
         bottomBar = {
-            Navigation()
+            Navigation(navController)
         })
 }
 
 @Preview
 @Composable
-fun FoodMonitoringScreenPreview() {
-    FoodMonitoringScreen()
+fun EggMonitoringScreenPreview() {
+    EggMonitoringScreen(NavController(LocalContext.current))
 }

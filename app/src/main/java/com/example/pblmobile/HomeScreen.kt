@@ -1,15 +1,7 @@
 package com.example.pblmobile
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Space
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,27 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import com.example.pblmobile.utils.UserPreferences
 
-class HomeActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            PblMobileTheme {
-                HomeScreen()
-            }
-        }
-    }
-}
-
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
     // Ambil username dari intent
     val userPreferences = UserPreferences(context).getUser()
@@ -63,12 +44,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         content = {
             Column(Modifier.padding(it)) {
-                HomeContent()
+                HomeContent(navController)
             }
         },
 
         bottomBar = {
-            com.example.pblmobile.navbar.Navigation(modifier)
+            Navigation(navController = navController)
         })
 }
 
@@ -76,14 +57,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Composable
 fun HomeScreenPreview() {
     PblMobileTheme {
-        HomeScreen()
+        HomeScreen(navController = NavController(LocalContext.current))
     }
 }
 
 @Composable
-fun HomeContent() {
-    val context = LocalContext.current
-
+fun HomeContent(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,12 +72,13 @@ fun HomeContent() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp) // Jarak antar Card
         ) {
+            // Food Monitoring Card (Jadwal)
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        context.startActivity(Intent(context, FoodMonitoringActivity::class.java))
+                        navController.navigate("foodMonitoring")
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
                 shape = ShapeDefaults.ExtraLarge
@@ -153,12 +133,13 @@ fun HomeContent() {
 
             }
 
+            // Food Monitoring Card (Stok)
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        context.startActivity(Intent(context, FoodMonitoringActivity::class.java))
+                        navController.navigate("foodMonitoring")
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
                 shape = ShapeDefaults.ExtraLarge
@@ -207,12 +188,13 @@ fun HomeContent() {
             }
         }
 
+        // Egg Monitoring Card
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.5f)
                 .clickable {
-                    context.startActivity(Intent(context, EggMonitoringActivity::class.java))
+                    navController.navigate("eggMonitoring")
                 },
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
             shape = ShapeDefaults.ExtraLarge
@@ -227,7 +209,6 @@ fun HomeContent() {
                     style = MaterialTheme.typography.titleLarge,
                     color = Color.Black
                 )
-
 
                 Row(
                     modifier = Modifier.fillMaxWidth().weight(1f),
@@ -271,12 +252,14 @@ fun HomeContent() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp) // Jarak antar Card
         ) {
+
+            // Security alarm Card
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        context.startActivity(Intent(context, SecurityAlarmActivity::class.java))
+                        navController.navigate("securityAlarm")
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
                 shape = ShapeDefaults.ExtraLarge
@@ -291,6 +274,7 @@ fun HomeContent() {
                 }
             }
 
+            // Analisis data Card
             Card(
                 modifier = Modifier
                     .weight(1f)
@@ -302,8 +286,8 @@ fun HomeContent() {
                 shape = ShapeDefaults.ExtraLarge
             ) {
                 Box(
-                    modifier = Modifier.fillMaxSize(), // Mengisi seluruh area Card
-                    contentAlignment = Alignment.Center // Memusatkan konten
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Analisis Data",

@@ -1,8 +1,5 @@
 package com.example.pblmobile
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -17,24 +14,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.pblmobile.navbar.Navigation
-import com.example.pblmobile.ui.theme.PblMobileTheme
-
-class SecurityAlarmActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PblMobileTheme {
-                SecurityAlarmScreen()
-            }
-        }
-    }
-}
 
 @Composable
-fun SecurityAlarmScreen() {
-    val context = LocalContext.current
-
+fun SecurityAlarmScreen(navController: NavController) {
     Scaffold(topBar = {
         Box(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
@@ -62,12 +46,12 @@ fun SecurityAlarmScreen() {
         },
 
         bottomBar = {
-            Navigation()
+            Navigation(navController)
         })
 }
 
 @Preview
 @Composable
 fun SecurityAlarmScreenPreview() {
-    SecurityAlarmScreen()
+    SecurityAlarmScreen(NavController((LocalContext.current)))
 }

@@ -1,8 +1,5 @@
 package com.example.pblmobile
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -13,27 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
 
-class AboutActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PblMobileTheme {
-                AboutScreen()
-            }
-        }
-    }
-}
-
 @Composable
-fun AboutScreen() {
+fun AboutScreen(navController: NavController) {
     Scaffold(topBar = {
         Box(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
@@ -55,7 +43,7 @@ fun AboutScreen() {
         },
 
         bottomBar = {
-            Navigation()
+            Navigation(navController)
         })
 }
 
@@ -63,7 +51,7 @@ fun AboutScreen() {
 @Composable
 fun AboutScreenPreview() {
     PblMobileTheme {
-        AboutScreen()
+        AboutScreen(navController = NavController(LocalContext.current))
     }
 }
 

@@ -1,8 +1,5 @@
 package com.example.pblmobile
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,27 +15,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.pblmobile.component.PrimaryButton
+import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
 
-class ProfileActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PblMobileTheme {
-                ProfileScreen()
-            }
-        }
-    }
-}
-
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     Scaffold(topBar = {
         Box(
             modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
@@ -58,7 +47,7 @@ fun ProfileScreen() {
         },
 
         bottomBar = {
-            com.example.pblmobile.navbar.Navigation()
+            Navigation(navController)
         })
 }
 
@@ -66,7 +55,7 @@ fun ProfileScreen() {
 @Composable
 fun ProfileScreenPreview() {
     PblMobileTheme {
-        ProfileScreen()
+        ProfileScreen(NavController(LocalContext.current))
     }
 }
 
