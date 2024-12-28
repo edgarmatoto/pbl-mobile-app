@@ -1,14 +1,16 @@
 package com.example.pblmobile
 
-import androidx.annotation.DrawableRes
+import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,15 +24,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pblmobile.component.ButtonDetail
+import com.example.pblmobile.component.GroupButton
 import com.example.pblmobile.component.PrimaryButton
 import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
+import com.example.pblmobile.apiService.model.User
+import com.example.pblmobile.utils.UserDatastore
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(navController: NavController) {
     Scaffold(topBar = {
         Box(
-            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
+            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp),
+            contentAlignment = Alignment.CenterStart
         ) {
             Column {
                 Text(
@@ -40,9 +48,15 @@ fun ProfileScreen(navController: NavController) {
         }
     },
 
-        content = {
-            Column(Modifier.padding(it)) {
-                ProfileContent()
+        content = { paddingValues ->
+            // Membuat konten dapat discroll
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState()) // Membuat konten scrollable
+            ) {
+                ProfileContent(navController)
             }
         },
 
@@ -60,8 +74,80 @@ fun ProfileScreenPreview() {
 }
 
 @Composable
-fun ProfileContent() {
-    Column(Modifier.fillMaxSize().padding(horizontal = 12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+fun ProfileContent(navController: NavController) {
+    val context = LocalContext.current
+    val userDatastore = UserDatastore(context)
+    val userState = remember { mutableStateOf(User(-1, "", "")) }
+    val isLoggedInState = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    // Collect user data from UserDatastore
+    LaunchedEffect(Unit) {
+        userDatastore.user.collect { user ->
+            userState.value = user
+        }
+        userDatastore.isLoggedIn.collect { status ->
+            isLoggedInState.value = status
+        }
+    }
+
+    // ambil preference navbar untuk di reset ketika logout
+    val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+
+    // List button untuk bagian keamanan
+    val buttonKeamananDetails = listOf(
+        ButtonDetail(
+            icon = R.drawable.baseline_lock_outline_24,
+            label = "Ganti password",
+            actionButton = {
+                IconButton(onClick = {
+                    navController.navigate("editProfile")
+                }) {
+                    Image(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+                }
+            },
+        )
+    )
+
+    // List button untuk bagian preferensi
+    val buttonPreferensiDetails = listOf(
+        ButtonDetail(
+            icon = R.drawable.baseline_notifications_none_24,
+            label = "Nyalakan notifikasi",
+            actionButton = {
+                NotificationSwitch()
+            },
+        ),
+        ButtonDetail(
+            icon = R.drawable.baseline_logout_24,
+            label = "Logout",
+            actionButton = {
+                IconButton(onClick = {
+                    scope.launch {
+                        userDatastore.clearUser()
+                        navController.navigate("login") {
+                            popUpTo("profile") { inclusive = true }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
+
+                        (context as Activity).finishAffinity()
+                        val restartIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                        restartIntent?.let { context.startActivity(it) }
+                    }
+                }) {
+                    Image(
+                        imageVector = Icons.Default.ArrowForward,
+                        colorFilter = ColorFilter.tint(Color.Red),
+                        contentDescription = null
+                    )
+                }
+            },
+            color = Color.Red
+        )
+    )
+
+    Column(Modifier.fillMaxSize().padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(R.drawable.prabowo),
             contentDescription = null,
@@ -71,7 +157,7 @@ fun ProfileContent() {
         Spacer(modifier = Modifier.size(18.dp))
 
         Text(
-            text = "prabowo",
+            text = userState.value.username,
             modifier = Modifier.fillMaxWidth(),
             fontWeight = FontWeight.Bold,
             color = Color.Black,
@@ -80,7 +166,7 @@ fun ProfileContent() {
         )
 
         Text(
-            text = "prabowosubianto@gmail.com",
+            text = userState.value.email,
             modifier = Modifier.fillMaxWidth(),
             color = Color.Black,
             style = MaterialTheme.typography.bodySmall,
@@ -89,12 +175,13 @@ fun ProfileContent() {
         Spacer(modifier = Modifier.size(14.dp))
 
         PrimaryButton(modifier = Modifier.width(120.dp), text = "Edit profil", shape = ShapeDefaults.ExtraLarge) {
-            /* Edit profile action */
+            navController.navigate("editProfile")
         }
         Spacer(modifier = Modifier.size(18.dp))
 
         Box(modifier = Modifier.fillMaxWidth()) {
             Column {
+                // Keamanan setting
                 Text(
                     modifier = Modifier.padding(horizontal = 18.dp),
                     text = "Keamanan",
@@ -103,11 +190,10 @@ fun ProfileContent() {
                 )
                 Spacer(modifier = Modifier.size(12.dp))
 
-                ProfileOption(icon = R.drawable.baseline_lock_outline_24, text = "Ganti password") {
-                    Image(imageVector = Icons.Default.ArrowForward, contentDescription = null)
-                }
+                GroupButton(buttonDetails = buttonKeamananDetails)
                 Spacer(modifier = Modifier.size(12.dp))
 
+                // Preferensi setting
                 Text(
                     modifier = Modifier.padding(horizontal = 18.dp),
                     text = "Preferensi",
@@ -116,54 +202,32 @@ fun ProfileContent() {
                 )
                 Spacer(modifier = Modifier.size(12.dp))
 
-                ProfileOption(icon = R.drawable.baseline_notifications_none_24, text = "Nyalakan notifikasi") {
-                    Image(imageVector = Icons.Default.ArrowForward, contentDescription = null)
-                }
-                ProfileOption(icon = R.drawable.baseline_logout_24, text = "Logout", textColor = Color.Red) {
-                    Image(imageVector = Icons.Default.ArrowForward, contentDescription = null, colorFilter = ColorFilter.tint(Color.Red))
-                }
+                GroupButton(buttonDetails = buttonPreferensiDetails)
             }
         }
     }
+}
+
+@Composable
+fun NotificationSwitch() {
+    var isChecked by remember { mutableStateOf(true) }
+
+    Switch(
+        checked = isChecked,
+        onCheckedChange = { isChecked = it },
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = Color.White, // Warna lingkaran saat aktif
+            checkedTrackColor = Color(0xFFFF9800), // Warna latar belakang saat aktif
+            uncheckedThumbColor = Color.White, // Warna lingkaran saat tidak aktif
+            uncheckedTrackColor = Color.Gray // Warna latar belakang saat tidak aktif
+        )
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ProfileContentPreview() {
     PblMobileTheme {
-        ProfileContent()
-    }
-}
-
-@Composable
-fun ProfileOption(
-    modifier: Modifier = Modifier, @DrawableRes icon: Int, text: String, textColor: Color = Color.Black, indicator: @Composable () -> Unit
-) {
-    Box(
-        modifier = modifier.fillMaxWidth().height(60.dp)
-            .background(color = Color(0xFFF3F3F3), shape = ShapeDefaults.ExtraLarge)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 18.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(modifier = Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = painterResource(icon), contentDescription = null)
-                Spacer(Modifier.size(12.dp))
-
-                Text(text = text, style = MaterialTheme.typography.bodyMedium, color = textColor)
-            }
-
-            indicator()
-        }
-    }
-}
-
-@Preview
-@Composable
-fun ProfileOptionPreview() {
-    ProfileOption(icon = R.drawable.baseline_lock_outline_24, text = "Ganti Password") {
-        Image(imageVector = Icons.Default.ArrowForward, contentDescription = null)
+        ProfileContent(NavController(LocalContext.current))
     }
 }

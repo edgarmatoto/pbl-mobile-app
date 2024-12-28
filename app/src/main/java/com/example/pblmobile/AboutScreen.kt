@@ -2,6 +2,8 @@ package com.example.pblmobile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,22 +24,33 @@ import com.example.pblmobile.ui.theme.PblMobileTheme
 
 @Composable
 fun AboutScreen(navController: NavController) {
-    Scaffold(topBar = {
-        Box(
-            modifier = Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 10.dp), contentAlignment = Alignment.CenterStart
-        ) {
-            Column {
-                Text(
-                    text = "Tentang aplikasi",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+    Scaffold(
+        topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .padding(horizontal = 10.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Column {
+                    Text(
+                        text = "Tentang aplikasi",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
-        }
-    },
+        },
 
-        content = {
-            Column(Modifier.padding(it)) {
+        content = { paddingValues ->
+            // Membuat konten dapat discroll
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState()) // Membuat konten scrollable
+            ) {
                 AboutContent()
             }
         },
@@ -57,7 +70,11 @@ fun AboutScreenPreview() {
 
 @Composable
 fun AboutContent() {
-    Column(Modifier.fillMaxSize().padding(horizontal = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(horizontal = 12.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
             painter = painterResource(R.drawable.logo),
             contentDescription = null,

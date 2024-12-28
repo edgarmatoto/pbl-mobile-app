@@ -16,15 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
-import com.example.pblmobile.apiService.user.LoginRequest
+import com.example.pblmobile.apiService.model.LoginRequest
 import com.example.pblmobile.component.PrimaryButton
 import com.example.pblmobile.ui.theme.PblMobileTheme
-import com.example.pblmobile.utils.UserPreferences
+import com.example.pblmobile.utils.UserDatastore
 import kotlinx.coroutines.launch
 
 @Composable
-fun UsernameInputField(onValueChange: (String) -> Unit) {
-    var text by remember { mutableStateOf("") }
+fun UsernameInputField(username: String = "", onValueChange: (String) -> Unit) {
+    var text by remember { mutableStateOf(username) }
 
     OutlinedTextField(
         label = { Text(text = "Username") },
@@ -78,8 +78,10 @@ fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
     val coroutineScope = rememberCoroutineScope()
+
+    // Menggunakan UserDatastore untuk menyimpan data pengguna
+    val userDatastore = UserDatastore(context)
 
     Scaffold(
         modifier = Modifier,
@@ -112,7 +114,7 @@ fun LoginScreen(navController: NavController) {
                 // Handle login on button click
                 PrimaryButton(text = "Login") {
                     coroutineScope.launch {
-                        handleLogin(username, password, context, navController)
+                        handleLogin(username, password, context, navController, userDatastore)
                     }
                 }
             }
@@ -126,18 +128,24 @@ fun LoginScreen(navController: NavController) {
     )
 }
 
-suspend fun handleLogin(username: String, password: String, context: Context, navController: NavController) {
+suspend fun handleLogin(
+    username: String,
+    password: String,
+    context: Context,
+    navController: NavController,
+    userDatastore: UserDatastore
+) {
     try {
         val loginRequest = LoginRequest(username, password)
         val response = RetrofitInstance.api.loginUser(loginRequest)
 
         if (response.status) {
-            val userId = response.user.id
+            val id = response.user.id
             val email = response.user.email
-            val userPreferences = UserPreferences(context)
-            userPreferences.saveUser(userId, username, email)
 
-            // navigate to Home screen
+            userDatastore.saveUser(id, username, email)
+
+            // Navigasi ke Home screen
             navController.navigate("home") {
                 popUpTo("login") { inclusive = true }
             }

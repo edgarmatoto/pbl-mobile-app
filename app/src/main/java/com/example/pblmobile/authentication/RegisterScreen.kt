@@ -1,6 +1,5 @@
 package com.example.pblmobile.authentication
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
-import com.example.pblmobile.apiService.user.RegisterRequest
+import com.example.pblmobile.apiService.model.RegisterRequest
 import com.example.pblmobile.component.PrimaryButton
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import kotlinx.coroutines.launch
@@ -88,16 +87,16 @@ fun RegisterScreen(navController: NavController) {
 }
 
 @Composable
-fun EmailInputField(onValueChange: (String) -> Unit) {
-    var email by remember { mutableStateOf("") }
+fun EmailInputField(email: String = "", onValueChange: (String) -> Unit) {
+    var text by remember { mutableStateOf(email) }
 
     OutlinedTextField(
         label = { Text(text = "Email") },
         placeholder = { Text(text = "prabowo@gmail.com") },
         modifier = Modifier.fillMaxWidth(),
-        value = email,
+        value = text,
         onValueChange = {
-            email = it
+            text = it
             onValueChange(it)  // Update the state in the parent composable
         }
     )

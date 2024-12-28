@@ -44,11 +44,20 @@ fun Navigation(navController: NavController) {
                 sharedPreferences.edit().putInt("selected_item", index).apply()
 
                 when (index) {
-                    0 -> navController.navigate("home")
+                    0 -> navController.navigate("home") {
+                        launchSingleTop = true
+                        popUpTo("home") { inclusive = true }
+                    }
 
-                    1 -> navController.navigate("about")
+                    1 -> navController.navigate("about") {
+                        launchSingleTop = true
+                        popUpTo("about") { inclusive = true }
+                    }
 
-                    2 -> navController.navigate("profile")
+                    2 -> navController.navigate("profile") {
+                        launchSingleTop = true
+                        popUpTo("profile") { inclusive = true }
+                    }
                 }
             })
         }

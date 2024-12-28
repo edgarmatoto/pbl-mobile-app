@@ -1,9 +1,12 @@
 package com.example.pblmobile
 
+import AddJadwalPakanScreen
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,6 +16,7 @@ import com.example.pblmobile.authentication.RegisterScreen
 import com.example.pblmobile.onboarding.OnboardingScreen
 import com.example.pblmobile.onboarding.OnboardingUtils
 import com.example.pblmobile.ui.theme.PblMobileTheme
+import com.example.pblmobile.utils.UserDatastore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +33,25 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val navController = rememberNavController()
     val context = LocalContext.current
+    val userDatastore = UserDatastore(context)
+    val isLoggedIn = userDatastore.isLoggedIn.collectAsState(initial = false)
+
+    val startDestination = if (isLoggedIn.value) {
+        "home"
+    } else if (OnboardingUtils(context).isOnboardCompleted()) {
+        "login"
+    } else {
+        "onboarding"
+    }
+
+
+    // Reset preference navbar
+    val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    sharedPreferences.edit().putInt("selected_item", 0).apply()
 
     NavHost(
         navController = navController,
-        startDestination = if (OnboardingUtils(context).isOnboardCompleted()) "login" else "onboarding"
+        startDestination = startDestination
     ) {
         composable("onboarding") {
             OnboardingScreen(onFinished = {
@@ -66,5 +85,12 @@ fun App() {
         composable("securityAlarm") {
             SecurityAlarmScreen(navController)
         }
+        composable("editProfile") {
+            EditProfileScreen(navController)
+        }
+        composable("addJadwalPakan") {
+            AddJadwalPakanScreen(navController)
+        }
+
     }
 }
