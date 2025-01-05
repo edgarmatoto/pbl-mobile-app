@@ -32,15 +32,15 @@ interface ApiService {
     @GET("api/kelompok_2/stok_pakan.php")
     suspend fun getLatestStokPakan(): StokPakanApiResponse
 
-    @POST("api/kelompok_2/jadwal_pakan.php")
+    @POST("api/kelompok_2/test-jadwal_pakan.php")
     suspend fun addJadwalPakan(@Body request: JadwalPakanRequest): JadwalPakanApiResponse
 
-    @GET("api/kelompok_2/jadwal_pakan.php")
+    @GET("api/kelompok_2/test-jadwal_pakan.php")
     suspend fun getJadwalPakan(): JadwalPakanApiResponse
 
-    @HTTP(method = "DELETE", path = "api/kelompok_2/jadwal_pakan.php", hasBody = true)
+    @HTTP(method = "DELETE", path = "api/kelompok_2/test-jadwal_pakan.php", hasBody = true)
     suspend fun deleteJadwalPakan(@Body request: IdJadwalPakanRequest): JadwalPakanApiResponse
 
-    @PUT("api/kelompok_2/jadwal_pakan.php")
+    @PUT("api/kelompok_2/tet-jadwal_pakan.php")
     suspend fun updateJadwalPakan(@Body request: JadwalPakanRequest): JadwalPakanApiResponse
 }

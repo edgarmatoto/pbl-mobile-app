@@ -2,6 +2,7 @@ package com.example.pblmobile
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -141,7 +142,7 @@ fun HomeContent(navController: NavController) {
                         jadwalPakan?.forEach { jadwal ->
                             val jamFormatted = jadwal.jam.substring(0, 5)
                             Text(
-                                text = "$jamFormatted - ${jadwal.gram} gram",
+                                text = "$jamFormatted - ${jadwal.detik} detik",
                             )
                         }
                     }
@@ -156,14 +157,18 @@ fun HomeContent(navController: NavController) {
                             shape = ShapeDefaults.Large,
                             colors = ButtonDefaults.buttonColors(Color.White),
                             onClick = {
-                                // TODO: Fungsi buka pakan
+                                navController.navigate("foodMonitoring") {
+                                    popUpTo("foodMonitoring") { inclusive = true }
+                                }
                             }) {
                             Text(text = "Buka", color = Color.Black)
                         }
 
                         IconButton(
                             modifier = Modifier, colors = IconButtonDefaults.iconButtonColors(Color.White), onClick = {
-                                // TODO: tambah jadwal pakan
+                                navController.navigate("addJadwalPakan"){
+                                    popUpTo("foodMonitoringScreen") { inclusive = true }
+                                }
                             }) {
                             Icon(
                                 painter = painterResource(R.drawable.baseline_add_24),
@@ -190,7 +195,7 @@ fun HomeContent(navController: NavController) {
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp) // Jarak antar Card
         ) {
 
-            // Security alarm Card
+            // Coming soon Card
             Card(
                 modifier = Modifier
                     .weight(1f)
@@ -207,18 +212,18 @@ fun HomeContent(navController: NavController) {
                     modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Analisis Data",
+                        text = "Coming Soon",
                     )
                 }
             }
 
-            // Analisis data Card
+            // Coming soon Card
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        // Analisis data activity here
+                        // Coming soon activity here
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
                 shape = ShapeDefaults.ExtraLarge
@@ -227,7 +232,7 @@ fun HomeContent(navController: NavController) {
                     modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Analisis Data",
+                        text = "Coming Soon",
                     )
                 }
             }
@@ -247,7 +252,9 @@ fun SuhuKelembapanCard(
             .fillMaxWidth()
             .aspectRatio(1.5f)
             .clickable {
-                navController.navigate("eggMonitoring")
+//                navController.navigate("eggMonitoring") {
+//                    popUpTo("foodMonitoring") { inclusive = true }
+//                }
             }, colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary), shape = ShapeDefaults.ExtraLarge
     ) {
         Column(
@@ -304,12 +311,11 @@ fun StokPakanCard(modifier: Modifier, navController: NavController, viewModel: S
     val stokPakan = viewModel.stokPakan.collectAsState().value
 
     Card(
-        modifier = modifier
-            .clickable {
-                navController.navigate("foodMonitoring") {
-                    popUpTo("foodMonitoring") { inclusive = true }
-                }
-            }, colors = CardDefaults.cardColors(Color(0xFFDBD3D3)), shape = ShapeDefaults.ExtraLarge
+        modifier = modifier.clickable {
+//            navController.navigate("foodMonitoring") {
+//                popUpTo("foodMonitoring") { inclusive = true }
+//            }
+        }, colors = CardDefaults.cardColors(Color(0xFFDBD3D3)), shape = ShapeDefaults.ExtraLarge
     ) {
         Column(
             modifier = Modifier
@@ -322,7 +328,9 @@ fun StokPakanCard(modifier: Modifier, navController: NavController, viewModel: S
                     .fillMaxWidth(), contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${stokPakan?.stok?.toInt() ?: "--"}%", style = MaterialTheme.typography.displayMedium, fontWeight = FontWeight.Bold
+                    text = "${stokPakan?.stok?.toInt() ?: "--"}%",
+                    style = MaterialTheme.typography.displayMedium,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -330,13 +338,11 @@ fun StokPakanCard(modifier: Modifier, navController: NavController, viewModel: S
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Stok Makanan",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    text = "Stok Makanan", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold
                 )
             }
         }

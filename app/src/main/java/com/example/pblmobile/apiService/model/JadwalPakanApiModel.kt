@@ -3,7 +3,7 @@ package com.example.pblmobile.apiService.model
 data class JadwalPakanRequest(
     val id: Int? = null,
     val jam: String,
-    val gram: String
+    val detik: String
 )
 
 data class JadwalPakanApiResponse(
@@ -15,7 +15,7 @@ data class JadwalPakanApiResponse(
 data class JadwalPakanData(
     val id: Int,
     val jam: String,
-    val gram: String
+    val detik: String
 )
 
 data class IdJadwalPakanRequest(

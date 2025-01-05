@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -104,14 +105,18 @@ fun FoodMonitoringScreen(navController: NavController) {
                             )
 
                             Column() {
-                                jadwalPakan?.forEach { jadwal ->
+                                jadwalPakan?.forEachIndexed { index, jadwal ->
                                     val jamFormatted = jadwal.jam.substring(0, 5)
                                     val coroutineScope = rememberCoroutineScope()
                                     val context = LocalContext.current
 
-                                    Row {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
                                         Text(
-                                            text = "$jamFormatted - ${jadwal.gram} gram",
+                                            text = "$jamFormatted - ${jadwal.detik} detik",
                                         )
 
                                         IconButton(onClick = {
@@ -121,19 +126,38 @@ fun FoodMonitoringScreen(navController: NavController) {
                                                     val response = RetrofitInstance.api.deleteJadwalPakan(deleteRequest)
 
                                                     if (response.status) {
-                                                        Toast.makeText(context, "Jadwal berhasil dihapus", Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(
+                                                            context, "Jadwal berhasil dihapus", Toast.LENGTH_SHORT
+                                                        ).show()
                                                         // Perbarui UI dengan memuat ulang data
                                                         jadwalPakanViewModel.fetchJadwalPakan()
                                                     } else {
-                                                        Toast.makeText(context, response.message, Toast.LENGTH_SHORT).show()
+                                                        Toast.makeText(context, response.message, Toast.LENGTH_SHORT)
+                                                            .show()
                                                     }
                                                 } catch (e: Exception) {
-                                                    Toast.makeText(context, "Gagal menghapus jadwal: ${e.message}", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Gagal menghapus jadwal: ${e.message}",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
                                                 }
                                             }
                                         }) {
-                                            Icon(Icons.Filled.Delete, contentDescription = "Hapus Jadwal")
+                                            Icon(
+                                                Icons.Filled.Delete,
+                                                contentDescription = "Hapus Jadwal",
+                                                tint = Color.Red
+                                            )
                                         }
+                                    }
+
+                                    if (index < (jadwalPakan.size - 1)) {
+                                        Divider(
+                                            thickness = 1.dp,
+                                            color = Color.LightGray,
+                                            modifier = Modifier.padding(vertical = 5.dp)
+                                        )
                                     }
                                 }
                             }
@@ -143,21 +167,11 @@ fun FoodMonitoringScreen(navController: NavController) {
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-//                                Button(
-//                                    modifier = Modifier,
-//                                    shape = ShapeDefaults.Large,
-//                                    colors = ButtonDefaults.buttonColors(Color.White),
-//                                    onClick = {
-//                                        // TODO: Fungsi buka pakan
-//                                    }) {
-//                                    Text(text = "Buka", color = Color.Black)
-//                                }
-
                                 IconButton(
                                     modifier = Modifier,
                                     colors = IconButtonDefaults.iconButtonColors(Color.White),
                                     onClick = {
-                                        navController.navigate("addJadwalPakan"){
+                                        navController.navigate("addJadwalPakan") {
                                             popUpTo("foodMonitoringScreen") { inclusive = true }
                                         }
                                     }) {
@@ -212,7 +226,7 @@ fun FoodMonitoringScreen(navController: NavController) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .weight(1f),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Text(
@@ -254,7 +268,7 @@ fun FoodMonitoringScreen(navController: NavController) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .weight(1f),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    horizontalArrangement = Arrangement.Center,
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Text(

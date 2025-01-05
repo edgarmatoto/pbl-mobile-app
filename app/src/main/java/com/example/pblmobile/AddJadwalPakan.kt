@@ -36,7 +36,7 @@ fun AddJadwalPakanScreen(navController: NavController) {
 
     // State untuk input field
     var jam by remember { mutableStateOf("") }
-    var gram by remember { mutableStateOf("") }
+    var detik by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = Modifier,
@@ -64,12 +64,12 @@ fun AddJadwalPakanScreen(navController: NavController) {
                 JamInputField(jam) { jam = it }
                 Spacer(Modifier.size(5.dp))
 
-                GramInputField(gram) { gram = it }
+                DetikInputField(detik) { detik = it }
                 Spacer(Modifier.size(20.dp))
 
                 PrimaryButton(text = "Simpan") {
                     coroutineScope.launch {
-                        val request = JadwalPakanRequest(jam = jam, gram = gram)
+                        val request = JadwalPakanRequest(jam = jam, detik = detik)
                         try {
                             val response = RetrofitInstance.api.addJadwalPakan(request)
                             if (response.status) {
@@ -108,16 +108,16 @@ fun JamInputField(jam: String, onValueChange: (String) -> Unit) {
 }
 
 @Composable
-fun GramInputField(gram: String, onValueChange: (String) -> Unit) {
-    var inputGram by remember { mutableStateOf(gram) }
+fun DetikInputField(detik: String, onValueChange: (String) -> Unit) {
+    var inputDetik by remember { mutableStateOf(detik) }
 
     OutlinedTextField(
-        label = { Text(text = "Gram") },
+        label = { Text(text = "Durasi buka (detik)") },
         placeholder = { Text(text = "12") },
         modifier = Modifier.fillMaxWidth(),
-        value = inputGram,
+        value = inputDetik,
         onValueChange = {
-            inputGram = it
+            inputDetik = it
             onValueChange(it) // Update the state in the parent composable
         }
     )
