@@ -80,8 +80,8 @@ fun App() {
         composable("temperature") {
             TemperatureScreen(navController)
         }
-        composable("feed") {
-            FeedScreen(navController)
+        composable("pakan") {
+            PakanScreen(navController)
         }
         composable("alarm") {
             AlarmScreen(navController)

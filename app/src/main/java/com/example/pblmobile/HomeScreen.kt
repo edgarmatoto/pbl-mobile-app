@@ -126,8 +126,8 @@ fun HomeContent(navController: NavController) {
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        navController.navigate("feed") {
-                            popUpTo("feed") { inclusive = true }
+                        navController.navigate("pakan") {
+                            popUpTo("pakan") { inclusive = true }
                         }
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
@@ -160,7 +160,7 @@ fun HomeContent(navController: NavController) {
                         IconButton(
                             modifier = Modifier, colors = IconButtonDefaults.iconButtonColors(Color.White), onClick = {
                                 navController.navigate("addJadwalPakan") {
-                                    popUpTo("feed") { inclusive = true }
+                                    popUpTo("pakan") { inclusive = true }
                                 }
                             }) {
                             Icon(
@@ -278,7 +278,7 @@ fun SuhuKelembapanCard(
             .aspectRatio(1.5f)
             .clickable {
 //                navController.navigate("temperature") {
-//                    popUpTo("feed") { inclusive = true }
+//                    popUpTo("pakan") { inclusive = true }
 //                }
             }, colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary), shape = ShapeDefaults.ExtraLarge
     ) {
@@ -337,8 +337,8 @@ fun StokPakanCard(modifier: Modifier, navController: NavController, viewModel: S
 
     Card(
         modifier = modifier.clickable {
-//            navController.navigate("feed") {
-//                popUpTo("feed") { inclusive = true }
+//            navController.navigate("pakan") {
+//                popUpTo("pakan") { inclusive = true }
 //            }
         }, colors = CardDefaults.cardColors(Color(0xFFDBD3D3)), shape = ShapeDefaults.ExtraLarge
     ) {

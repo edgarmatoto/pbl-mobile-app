@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun FeedScreen(navController: NavController) {
+fun PakanScreen(navController: NavController) {
     val stokPakanViewModel: StokPakanViewModel = viewModel()
     val jadwalPakanViewModel: JadwalPakanViewModel = viewModel()
 
@@ -335,8 +335,8 @@ fun FoodScheduleSwitch() {
 
 @Preview
 @Composable
-fun FeedScreenPreview() {
+fun PakanScreenPreview() {
     PblMobileTheme {
-        FeedScreen(NavController((LocalContext.current)))
+        PakanScreen(NavController((LocalContext.current)))
     }
 }

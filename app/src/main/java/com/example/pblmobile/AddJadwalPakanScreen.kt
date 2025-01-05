@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.model.JadwalPakanRequest
 import com.example.pblmobile.component.PrimaryButton
+import com.example.pblmobile.component.StringInputField
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import kotlinx.coroutines.launch
 
@@ -61,10 +62,10 @@ fun AddJadwalPakanScreen(navController: NavController) {
                     .padding(horizontal = 10.dp)
                     .fillMaxWidth()
             ) {
-                JamInputField(jam) { jam = it }
+                StringInputField(data = jam, label = "Jam", placeholder = "Gunakan format 00:00") { jam = it }
                 Spacer(Modifier.size(5.dp))
 
-                DetikInputField(detik) { detik = it }
+                StringInputField(data = detik, label = "Durasi buka (detik)", placeholder = "Durasi buka (detik)") { detik = it }
                 Spacer(Modifier.size(20.dp))
 
                 PrimaryButton(text = "Simpan") {
@@ -74,7 +75,7 @@ fun AddJadwalPakanScreen(navController: NavController) {
                             val response = RetrofitInstance.api.addJadwalPakan(request)
                             if (response.status) {
                                 Toast.makeText(context, "Jadwal Pakan berhasil diperbarui.", Toast.LENGTH_LONG).show()
-                                navController.navigate("feed") {
+                                navController.navigate("pakan") {
                                     popUpTo("addJadwalPakan") { inclusive = true }
                                 }
                             } else {
@@ -88,38 +89,6 @@ fun AddJadwalPakanScreen(navController: NavController) {
             }
         },
         bottomBar = {}
-    )
-}
-
-@Composable
-fun JamInputField(jam: String, onValueChange: (String) -> Unit) {
-    var inputJam by remember { mutableStateOf(jam) }
-
-    OutlinedTextField(
-        label = { Text(text = "Jam") },
-        placeholder = { Text(text = "00:00") },
-        modifier = Modifier.fillMaxWidth(),
-        value = inputJam,
-        onValueChange = {
-            inputJam = it
-            onValueChange(it) // Update the state in the parent composable
-        }
-    )
-}
-
-@Composable
-fun DetikInputField(detik: String, onValueChange: (String) -> Unit) {
-    var inputDetik by remember { mutableStateOf(detik) }
-
-    OutlinedTextField(
-        label = { Text(text = "Durasi buka (detik)") },
-        placeholder = { Text(text = "12") },
-        modifier = Modifier.fillMaxWidth(),
-        value = inputDetik,
-        onValueChange = {
-            inputDetik = it
-            onValueChange(it) // Update the state in the parent composable
-        }
     )
 }
 
