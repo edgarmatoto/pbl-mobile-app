@@ -2,20 +2,17 @@ package com.example.pblmobile
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,13 +26,13 @@ import com.example.pblmobile.component.ButtonDetail
 import com.example.pblmobile.component.GroupButton
 import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
-import com.example.pblmobile.viewmodel.jadwalPakan.JadwalPakanViewModel
-import com.example.pblmobile.viewmodel.stokPakan.StokPakanViewModel
+import com.example.pblmobile.viewModel.JadwalPakanViewModel
+import com.example.pblmobile.viewModel.StokPakanViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun FoodMonitoringScreen(navController: NavController) {
+fun FeedScreen(navController: NavController) {
     val stokPakanViewModel: StokPakanViewModel = viewModel()
     val jadwalPakanViewModel: JadwalPakanViewModel = viewModel()
 
@@ -82,12 +79,11 @@ fun FoodMonitoringScreen(navController: NavController) {
         },
 
         content = { paddingValues ->
-            // Membuat konten dapat discroll
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()) // Membuat konten scrollable
+                    .verticalScroll(rememberScrollState())
             ) {
                 Column(Modifier.padding(12.dp)) {
                     Card(
@@ -172,7 +168,7 @@ fun FoodMonitoringScreen(navController: NavController) {
                                     colors = IconButtonDefaults.iconButtonColors(Color.White),
                                     onClick = {
                                         navController.navigate("addJadwalPakan") {
-                                            popUpTo("foodMonitoringScreen") { inclusive = true }
+                                            popUpTo("feed") { inclusive = true }
                                         }
                                     }) {
                                     Icon(
@@ -339,8 +335,8 @@ fun FoodScheduleSwitch() {
 
 @Preview
 @Composable
-fun FoodMonitoringScreenPreview() {
+fun FeedScreenPreview() {
     PblMobileTheme {
-        FoodMonitoringScreen(NavController((LocalContext.current)))
+        FeedScreen(NavController((LocalContext.current)))
     }
 }

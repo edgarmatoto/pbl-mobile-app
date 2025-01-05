@@ -1,6 +1,7 @@
 package com.example.pblmobile
 
 import AddJadwalPakanScreen
+import AddAlarmScreen
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -76,14 +77,14 @@ fun App() {
         composable("profile") {
             ProfileScreen(navController)
         }
-        composable("eggMonitoring") {
-            EggMonitoringScreen(navController)
+        composable("temperature") {
+            TemperatureScreen(navController)
         }
-        composable("foodMonitoring") {
-            FoodMonitoringScreen(navController)
+        composable("feed") {
+            FeedScreen(navController)
         }
-        composable("securityAlarm") {
-            SecurityAlarmScreen(navController)
+        composable("alarm") {
+            AlarmScreen(navController)
         }
         composable("editProfile") {
             EditProfileScreen(navController)
@@ -91,6 +92,8 @@ fun App() {
         composable("addJadwalPakan") {
             AddJadwalPakanScreen(navController)
         }
-
+        composable("addAlarm") {
+            AddAlarmScreen(navController)
+        }
     }
 }

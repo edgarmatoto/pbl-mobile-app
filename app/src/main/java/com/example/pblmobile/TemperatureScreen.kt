@@ -19,11 +19,11 @@ import com.example.pblmobile.component.ButtonDetail
 import com.example.pblmobile.component.GroupButton
 import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
-import com.example.pblmobile.viewModel.suhuKelembapan.SuhuKelembapanViewModel
+import com.example.pblmobile.viewModel.SuhuKelembapanViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun EggMonitoringScreen(navController: NavController) {
+fun TemperatureScreen(navController: NavController) {
     val viewModel: SuhuKelembapanViewModel = viewModel()
 
     LaunchedEffect(Unit) {
@@ -248,8 +248,8 @@ fun AutomaticSwitch() {
 
 @Preview
 @Composable
-fun EggMonitoringScreenPreview() {
+fun TemperatureScreenPreview() {
     PblMobileTheme {
-        EggMonitoringScreen(NavController(LocalContext.current))
+        TemperatureScreen(NavController(LocalContext.current))
     }
 }

@@ -19,11 +19,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.pblmobile.navbar.Navigation
 import com.example.pblmobile.ui.theme.PblMobileTheme
-import com.example.pblmobile.viewModel.suhuKelembapan.SuhuKelembapanViewModel
+import com.example.pblmobile.viewModel.SuhuKelembapanViewModel
 import com.example.pblmobile.apiService.model.User
 import com.example.pblmobile.utils.UserDatastore
-import com.example.pblmobile.viewmodel.jadwalPakan.JadwalPakanViewModel
-import com.example.pblmobile.viewmodel.stokPakan.StokPakanViewModel
+import com.example.pblmobile.viewModel.AlarmViewModel
+import com.example.pblmobile.viewModel.JadwalPakanViewModel
+import com.example.pblmobile.viewModel.StokPakanViewModel
 import kotlinx.coroutines.delay
 
 @Composable
@@ -94,17 +95,20 @@ fun HomeContent(navController: NavController) {
     val suhuKelembapanViewModel: SuhuKelembapanViewModel = viewModel()
     val stokPakanViewModel: StokPakanViewModel = viewModel()
     val jadwalPakanViewModel: JadwalPakanViewModel = viewModel()
+    val alarmViewModel: AlarmViewModel = viewModel()
 
     LaunchedEffect(Unit) {
         while (true) {
             suhuKelembapanViewModel.fetchLatestData()
             stokPakanViewModel.fetchLatestStokPakan()
             jadwalPakanViewModel.fetchJadwalPakan()
+            alarmViewModel.fetchAlarm()
             delay(10000)
         }
     }
 
     val jadwalPakan = jadwalPakanViewModel.jadwalPakan.collectAsState().value
+    val alarm = alarmViewModel.alarm.collectAsState().value
 
     Column(
         modifier = Modifier
@@ -122,8 +126,8 @@ fun HomeContent(navController: NavController) {
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        navController.navigate("foodMonitoring") {
-                            popUpTo("foodMonitoring") { inclusive = true }
+                        navController.navigate("feed") {
+                            popUpTo("feed") { inclusive = true }
                         }
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiary),
@@ -141,33 +145,22 @@ fun HomeContent(navController: NavController) {
                     Column() {
                         jadwalPakan?.forEach { jadwal ->
                             val jamFormatted = jadwal.jam.substring(0, 5)
+                            val detik = jadwal.detik
                             Text(
-                                text = "$jamFormatted - ${jadwal.detik} detik",
+                                text = "$jamFormatted - ${detik} detik",
                             )
                         }
                     }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Button(
-                            modifier = Modifier,
-                            shape = ShapeDefaults.Large,
-                            colors = ButtonDefaults.buttonColors(Color.White),
-                            onClick = {
-                                navController.navigate("foodMonitoring") {
-                                    popUpTo("foodMonitoring") { inclusive = true }
-                                }
-                            }) {
-                            Text(text = "Buka", color = Color.Black)
-                        }
-
                         IconButton(
                             modifier = Modifier, colors = IconButtonDefaults.iconButtonColors(Color.White), onClick = {
-                                navController.navigate("addJadwalPakan"){
-                                    popUpTo("foodMonitoringScreen") { inclusive = true }
+                                navController.navigate("addJadwalPakan") {
+                                    popUpTo("feed") { inclusive = true }
                                 }
                             }) {
                             Icon(
@@ -195,25 +188,57 @@ fun HomeContent(navController: NavController) {
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp) // Jarak antar Card
         ) {
 
-            // Coming soon Card
+            // Alarm Card
             Card(
                 modifier = Modifier
                     .weight(1f)
                     .aspectRatio(1f)
                     .clickable {
-                        navController.navigate("securityAlarm") {
-                            popUpTo("securityAlarm") { inclusive = true }
+                        navController.navigate("alarm") {
+                            popUpTo("alarm") { inclusive = true }
                         }
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary),
                 shape = ShapeDefaults.ExtraLarge
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                Column(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Coming Soon",
+                        text = "Buzzer Alarm", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold
                     )
+
+                    Column() {
+                        alarm?.forEach { alarm ->
+                            val jamMulaiFormatted = alarm.jam_mulai.substring(0, 5)
+                            val jamSelesaiFormatted = alarm.jam_selesai.substring(0, 5)
+                            val buzzer = alarm.buzzer
+                            Text(
+                                text = "$jamMulaiFormatted - ${jamSelesaiFormatted}",
+                            )
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            modifier = Modifier, colors = IconButtonDefaults.iconButtonColors(Color.White), onClick = {
+                                navController.navigate("addAlarm") {
+                                    popUpTo("alarm") { inclusive = true }
+                                }
+                            }) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_add_24),
+                                contentDescription = null,
+                                tint = Color.Black
+                            )
+                        }
+                    }
                 }
             }
 
@@ -252,8 +277,8 @@ fun SuhuKelembapanCard(
             .fillMaxWidth()
             .aspectRatio(1.5f)
             .clickable {
-//                navController.navigate("eggMonitoring") {
-//                    popUpTo("foodMonitoring") { inclusive = true }
+//                navController.navigate("temperature") {
+//                    popUpTo("feed") { inclusive = true }
 //                }
             }, colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary), shape = ShapeDefaults.ExtraLarge
     ) {
@@ -312,8 +337,8 @@ fun StokPakanCard(modifier: Modifier, navController: NavController, viewModel: S
 
     Card(
         modifier = modifier.clickable {
-//            navController.navigate("foodMonitoring") {
-//                popUpTo("foodMonitoring") { inclusive = true }
+//            navController.navigate("feed") {
+//                popUpTo("feed") { inclusive = true }
 //            }
         }, colors = CardDefaults.cardColors(Color(0xFFDBD3D3)), shape = ShapeDefaults.ExtraLarge
     ) {

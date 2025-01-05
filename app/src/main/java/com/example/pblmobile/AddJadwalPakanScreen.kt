@@ -74,7 +74,7 @@ fun AddJadwalPakanScreen(navController: NavController) {
                             val response = RetrofitInstance.api.addJadwalPakan(request)
                             if (response.status) {
                                 Toast.makeText(context, "Jadwal Pakan berhasil diperbarui.", Toast.LENGTH_LONG).show()
-                                navController.navigate("foodMonitoring") {
+                                navController.navigate("feed") {
                                     popUpTo("addJadwalPakan") { inclusive = true }
                                 }
                             } else {

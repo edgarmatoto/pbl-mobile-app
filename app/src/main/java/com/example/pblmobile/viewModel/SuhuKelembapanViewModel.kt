@@ -1,12 +1,12 @@
-package com.example.pblmobile.viewModel.suhuKelembapan
+package com.example.pblmobile.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.model.SuhuKelembapanData
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class SuhuKelembapanViewModel : ViewModel() {
     private val _suhuKelembapan = MutableStateFlow<SuhuKelembapanData?>(null)
