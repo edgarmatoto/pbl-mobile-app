@@ -15,7 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.model.RegisterRequest
+import com.example.pblmobile.component.PasswordInputField
 import com.example.pblmobile.component.PrimaryButton
+import com.example.pblmobile.component.StringInputField
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import kotlinx.coroutines.launch
 
@@ -42,10 +44,10 @@ fun RegisterScreen(navController: NavController) {
         },
         content = {
             Column(Modifier.padding(it).padding(horizontal = 10.dp).fillMaxWidth()) {
-                UsernameInputField { username = it }
+                StringInputField(data = username, label = "Username", placeholder = "Prabowo") { username = it }
                 Spacer(Modifier.size(5.dp))
 
-                EmailInputField { email = it }
+                StringInputField(data = email, label = "Email", placeholder = "prabowo@gmail.com") { email = it }
                 Spacer(Modifier.size(5.dp))
 
                 PasswordInputField { password = it }
@@ -84,22 +86,6 @@ fun RegisterScreen(navController: NavController) {
                 }
             }
         })
-}
-
-@Composable
-fun EmailInputField(email: String = "", onValueChange: (String) -> Unit) {
-    var text by remember { mutableStateOf(email) }
-
-    OutlinedTextField(
-        label = { Text(text = "Email") },
-        placeholder = { Text(text = "prabowo@gmail.com") },
-        modifier = Modifier.fillMaxWidth(),
-        value = text,
-        onValueChange = {
-            text = it
-            onValueChange(it)  // Update the state in the parent composable
-        }
-    )
 }
 
 @Composable

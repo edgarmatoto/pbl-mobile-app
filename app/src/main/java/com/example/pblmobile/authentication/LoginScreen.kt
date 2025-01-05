@@ -10,51 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.model.LoginRequest
+import com.example.pblmobile.component.PasswordInputField
 import com.example.pblmobile.component.PrimaryButton
+import com.example.pblmobile.component.StringInputField
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import com.example.pblmobile.utils.UserDatastore
 import kotlinx.coroutines.launch
-
-@Composable
-fun UsernameInputField(username: String = "", onValueChange: (String) -> Unit) {
-    var text by remember { mutableStateOf(username) }
-
-    OutlinedTextField(
-        label = { Text(text = "Username") },
-        placeholder = { Text(text = "prabowo") },
-        modifier = Modifier.fillMaxWidth(),
-        value = text,
-        onValueChange = {
-            text = it
-            onValueChange(it) // Update the state in the parent composable
-        }
-    )
-}
-
-@Composable
-fun PasswordInputField(onValueChange: (String) -> Unit) {
-    var password by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = password,
-        onValueChange = {
-            password = it
-            onValueChange(it)
-        },
-        label = { Text(text = "Password") },
-        placeholder = { Text(text = "Masukkan password") },
-        modifier = Modifier.fillMaxWidth(),
-        visualTransformation = PasswordVisualTransformation(),
-    )
-}
-
 
 @Composable
 fun RegisterText(modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -106,7 +73,7 @@ fun LoginScreen(navController: NavController) {
                     .padding(horizontal = 10.dp)
                     .fillMaxWidth()
             ) {
-                UsernameInputField { username = it }
+                StringInputField(data = username, label = "Username", placeholder = "Prabowo") { username = it }
                 Spacer(Modifier.size(5.dp))
                 PasswordInputField { password = it }
                 Spacer(Modifier.size(20.dp))

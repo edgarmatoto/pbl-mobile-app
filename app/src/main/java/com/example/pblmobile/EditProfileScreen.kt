@@ -15,12 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pblmobile.apiService.RetrofitInstance
 import com.example.pblmobile.apiService.model.UpdateProfileRequest
-import com.example.pblmobile.authentication.EmailInputField
-import com.example.pblmobile.authentication.PasswordInputField
-import com.example.pblmobile.authentication.UsernameInputField
 import com.example.pblmobile.component.PrimaryButton
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import com.example.pblmobile.apiService.model.User
+import com.example.pblmobile.component.PasswordInputField
+import com.example.pblmobile.component.StringInputField
 import com.example.pblmobile.utils.UserDatastore
 import kotlinx.coroutines.launch
 
@@ -54,10 +53,10 @@ fun EditProfileScreen(navController: NavController) {
         },
         content = {
             Column(Modifier.padding(it).padding(horizontal = 10.dp).fillMaxWidth()) {
-                UsernameInputField(username = username) { username = it }
+                StringInputField(data = username, label = "Username", placeholder = username) { username = it }
                 Spacer(Modifier.size(5.dp))
 
-                EmailInputField(email = email) { email = it }
+                StringInputField (data = email, label = "Email", placeholder = email) { email = it }
                 Spacer(Modifier.size(5.dp))
 
                 PasswordInputField { password = it }
