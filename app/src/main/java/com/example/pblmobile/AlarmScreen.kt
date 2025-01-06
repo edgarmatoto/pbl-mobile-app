@@ -182,59 +182,59 @@ fun AlarmScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Alarm card
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(1f),
-                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
-                            shape = ShapeDefaults.ExtraLarge
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(12.dp)
-                                    .fillMaxSize(),
-                                verticalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(2f)
-                                        .fillMaxWidth(), contentAlignment = Alignment.Center
-                                ) {
-                                    Image(
-                                        painter = painterResource(R.drawable.baseline_hearing_24),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(90.dp)
-                                    )
-                                }
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Text(
-                                        text = "Alarm",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-
-//                                    IconButton(
-//                                        modifier = Modifier,
-//                                        colors = IconButtonDefaults.iconButtonColors(Color.Black),
-//                                        onClick = {
-//                                            // TODO: bunyikan alarm buzzer
-//                                        }) {
-//                                        Icon(
-//                                            painter = painterResource(R.drawable.baseline_play_arrow_24),
-//                                            contentDescription = null,
-//                                            tint = Color.White
-//                                        )
-//                                    }
-                                }
-                            }
-                        }
+//                        Card(
+//                            modifier = Modifier
+//                                .weight(1f)
+//                                .aspectRatio(1f),
+//                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
+//                            shape = ShapeDefaults.ExtraLarge
+//                        ) {
+//                            Column(
+//                                modifier = Modifier
+//                                    .padding(12.dp)
+//                                    .fillMaxSize(),
+//                                verticalArrangement = Arrangement.SpaceBetween
+//                            ) {
+//                                Box(
+//                                    modifier = Modifier
+//                                        .weight(2f)
+//                                        .fillMaxWidth(), contentAlignment = Alignment.Center
+//                                ) {
+//                                    Image(
+//                                        painter = painterResource(R.drawable.baseline_hearing_24),
+//                                        contentDescription = null,
+//                                        modifier = Modifier.size(90.dp)
+//                                    )
+//                                }
+//
+//                                Row(
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .weight(1f),
+//                                    horizontalArrangement = Arrangement.Center,
+//                                    verticalAlignment = Alignment.CenterVertically,
+//                                ) {
+//                                    Text(
+//                                        text = "Alarm",
+//                                        style = MaterialTheme.typography.titleMedium,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//
+////                                    IconButton(
+////                                        modifier = Modifier,
+////                                        colors = IconButtonDefaults.iconButtonColors(Color.Black),
+////                                        onClick = {
+////                                            // TODO: bunyikan alarm buzzer
+////                                        }) {
+////                                        Icon(
+////                                            painter = painterResource(R.drawable.baseline_play_arrow_24),
+////                                            contentDescription = null,
+////                                            tint = Color.White
+////                                        )
+////                                    }
+//                                }
+//                            }
+//                        }
 
                         Box(
                             modifier = Modifier

@@ -193,101 +193,101 @@ fun PakanScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Stok makanan Card
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(1f),
-                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
-                            shape = ShapeDefaults.ExtraLarge
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(12.dp)
-                                    .fillMaxSize(),
-                                verticalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(2f)
-                                        .fillMaxWidth(), contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = "${stokPakan?.stok?.toInt() ?: "--"}%",
-                                        style = MaterialTheme.typography.displayMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Text(
-                                        text = "Stok Makanan",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }
-                        }
-
-                        // Beri pakan Card
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .aspectRatio(1f),
-                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
-                            shape = ShapeDefaults.ExtraLarge
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(12.dp)
-                                    .fillMaxSize(),
-                                verticalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(2f)
-                                        .fillMaxWidth(), contentAlignment = Alignment.Center
-                                ) {
-                                    Image(
-                                        painter = painterResource(R.drawable.pakan_1),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(90.dp)
-                                    )
-                                }
-
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Text(
-                                        text = "Beri Makan",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-
-//                                    IconButton (
-//                                        modifier = Modifier,
-//                                        colors = IconButtonDefaults.iconButtonColors(Color.Black),
-//                                        onClick = {
-//                                            // TODO: Beri pakan
-//                                        }) {
-//                                        Icon(
-//                                            painter = painterResource(R.drawable.baseline_start_24),
-//                                            contentDescription = null,
-//                                            tint = Color.White
-//                                        )
-//                                    }
-                                }
-                            }
-                        }
+//                        Card(
+//                            modifier = Modifier
+//                                .weight(1f)
+//                                .aspectRatio(1f),
+//                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
+//                            shape = ShapeDefaults.ExtraLarge
+//                        ) {
+//                            Column(
+//                                modifier = Modifier
+//                                    .padding(12.dp)
+//                                    .fillMaxSize(),
+//                                verticalArrangement = Arrangement.SpaceBetween
+//                            ) {
+//                                Box(
+//                                    modifier = Modifier
+//                                        .weight(2f)
+//                                        .fillMaxWidth(), contentAlignment = Alignment.Center
+//                                ) {
+//                                    Text(
+//                                        text = "${stokPakan?.stok?.toInt() ?: "--"}%",
+//                                        style = MaterialTheme.typography.displayMedium,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//                                }
+//
+//                                Row(
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .weight(1f),
+//                                    horizontalArrangement = Arrangement.Center,
+//                                    verticalAlignment = Alignment.CenterVertically,
+//                                ) {
+//                                    Text(
+//                                        text = "Stok Makanan",
+//                                        style = MaterialTheme.typography.titleMedium,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//                                }
+//                            }
+//                        }
+//
+//                        // Beri pakan Card
+//                        Card(
+//                            modifier = Modifier
+//                                .weight(1f)
+//                                .aspectRatio(1f),
+//                            colors = CardDefaults.cardColors(Color(0xFFDBD3D3)),
+//                            shape = ShapeDefaults.ExtraLarge
+//                        ) {
+//                            Column(
+//                                modifier = Modifier
+//                                    .padding(12.dp)
+//                                    .fillMaxSize(),
+//                                verticalArrangement = Arrangement.SpaceBetween
+//                            ) {
+//                                Box(
+//                                    modifier = Modifier
+//                                        .weight(2f)
+//                                        .fillMaxWidth(), contentAlignment = Alignment.Center
+//                                ) {
+//                                    Image(
+//                                        painter = painterResource(R.drawable.pakan_1),
+//                                        contentDescription = null,
+//                                        modifier = Modifier.size(90.dp)
+//                                    )
+//                                }
+//
+//                                Row(
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .weight(1f),
+//                                    horizontalArrangement = Arrangement.Center,
+//                                    verticalAlignment = Alignment.CenterVertically,
+//                                ) {
+//                                    Text(
+//                                        text = "Beri Makan",
+//                                        style = MaterialTheme.typography.titleMedium,
+//                                        fontWeight = FontWeight.Bold
+//                                    )
+//
+////                                    IconButton (
+////                                        modifier = Modifier,
+////                                        colors = IconButtonDefaults.iconButtonColors(Color.Black),
+////                                        onClick = {
+////                                            // TODO: Beri pakan
+////                                        }) {
+////                                        Icon(
+////                                            painter = painterResource(R.drawable.baseline_start_24),
+////                                            contentDescription = null,
+////                                            tint = Color.White
+////                                        )
+////                                    }
+//                                }
+//                            }
+//                        }
                     }
                     Spacer(
                         Modifier

@@ -71,7 +71,7 @@ fun AddAlarmScreen(navController: NavController) {
 
                 PrimaryButton(text = "Simpan") {
                     coroutineScope.launch {
-                        val request = AlarmRequest(jam_mulai = jam_mulai, jam_selesai = jam_mulai, buzzer = buzzer)
+                        val request = AlarmRequest(jam_mulai = jam_mulai, jam_selesai = jam_selesai, buzzer = buzzer)
                         try {
                             val response = RetrofitInstance.api.addAlarm(request)
                             if (response.status) {
