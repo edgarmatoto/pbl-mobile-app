@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +19,8 @@ import com.example.pblmobile.onboarding.OnboardingScreen
 import com.example.pblmobile.onboarding.OnboardingUtils
 import com.example.pblmobile.ui.theme.PblMobileTheme
 import com.example.pblmobile.utils.UserDatastore
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,16 +38,10 @@ fun App() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val userDatastore = UserDatastore(context)
-    val isLoggedIn = userDatastore.isLoggedIn.collectAsState(initial = false)
+    val isLoggedIn = userDatastore.isLoggedIn.collectAsState(initial = false).value
+    val coroutineScope = rememberCoroutineScope()
 
-    val startDestination = if (isLoggedIn.value) {
-        "home"
-    } else if (OnboardingUtils(context).isOnboardCompleted()) {
-        "login"
-    } else {
-        "onboarding"
-    }
-
+    var startDestination = "splash"
 
     // Reset preference navbar
     val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
@@ -54,6 +51,23 @@ fun App() {
         navController = navController,
         startDestination = startDestination
     ) {
+        composable("splash") {
+            SplashScreen {
+                coroutineScope.launch {
+                    delay(2000) // Delay 2 detik untuk splash
+                    startDestination = if (isLoggedIn) {
+                        "home"
+                    } else if (OnboardingUtils(context).isOnboardCompleted()) {
+                        "login"
+                    } else {
+                        "onboarding"
+                    }
+                    navController.navigate(startDestination) {
+                        popUpTo("splash") { inclusive = true }
+                    }
+                }
+            }
+        }
         composable("onboarding") {
             OnboardingScreen(onFinished = {
                 OnboardingUtils(context).setOnboardComplete()
